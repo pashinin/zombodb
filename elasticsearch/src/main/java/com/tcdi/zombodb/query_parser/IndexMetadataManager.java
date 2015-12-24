@@ -20,7 +20,6 @@ import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsRequest;
 import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsResponse;
 import org.elasticsearch.action.support.IndicesOptions;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.collect.IdentityHashSet;
 
 import java.util.*;
 
@@ -42,7 +41,7 @@ public class IndexMetadataManager {
     private final List<IndexLinkAndMapping> mappings = new ArrayList<>();
     private final Map<String, ASTIndexLink> indexLinksByIndexName = new HashMap<>();
     private List<FieldAndIndexPair> allFields;
-    private Set<ASTIndexLink> usedIndexes = new IdentityHashSet<>();
+    private Map<ASTIndexLink, Boolean> usedIndexes = new IdentityHashMap<>();
     private final IndexRelationshipManager relationshipManager = new IndexRelationshipManager();
 
     private final Client client;
@@ -72,10 +71,10 @@ public class IndexMetadataManager {
     }
 
     public Set<ASTIndexLink> getUsedIndexes() {
-        return usedIndexes;
+        return usedIndexes.keySet();
     }
 
-    public void setUsedIndexes(Set<ASTIndexLink> usedIndexes) {
+    public void setUsedIndexes(Map<ASTIndexLink, Boolean> usedIndexes) {
         this.usedIndexes = usedIndexes;
     }
 

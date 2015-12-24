@@ -18,10 +18,7 @@ package com.tcdi.zombodb.postgres;
 import com.tcdi.zombodb.postgres.util.OverloadedContentRestRequest;
 import com.tcdi.zombodb.postgres.util.QueryAndIndexPair;
 import com.tcdi.zombodb.query_parser.QueryRewriter;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchScrollRequestBuilder;
-import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.action.search.*;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.bytes.BytesArray;
 import org.elasticsearch.common.inject.Inject;
@@ -92,8 +89,7 @@ public class PostgresTIDResponseAction extends BaseRestHandler {
             request.params().put("track_scores", "true");
 
             // perform the search
-            searchRequest = RestSearchAction.parseSearchRequest(request);
-            searchRequest.listenerThreaded(false);
+            searchRequest = RestSearchAction.parseSearchRequest(request, parseFieldMatcher);
             searchRequest.scroll(TimeValue.timeValueMinutes(10));
             searchRequest.searchType(SearchType.SCAN);
             searchRequest.preference(request.param("preference"));
@@ -162,7 +158,7 @@ public class PostgresTIDResponseAction extends BaseRestHandler {
         int cnt = 0;
         while (cnt < many) {
             searchResponse = client.searchScroll(
-                    new SearchScrollRequestBuilder(client)
+                    SearchScrollAction.INSTANCE.newRequestBuilder(client)
                             .setScrollId(searchResponse.getScrollId())
                             .setScroll(TimeValue.timeValueMinutes(10))
                             .request()

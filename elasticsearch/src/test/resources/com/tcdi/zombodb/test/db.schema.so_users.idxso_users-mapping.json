@@ -9,11 +9,6 @@
       "_all": {
         "enabled": false
       },
-      "_field_names": {
-        "enabled": false,
-        "type": "_field_names",
-        "index": "no"
-      },
       "properties": {
         "_cmax": {
           "type": "integer",
@@ -74,11 +69,6 @@
       },
       "_routing": {
         "required": true
-      },
-      "_field_names": {
-        "enabled": false,
-        "type": "_field_names",
-        "index": "no"
       },
       "_source": {
         "enabled": false

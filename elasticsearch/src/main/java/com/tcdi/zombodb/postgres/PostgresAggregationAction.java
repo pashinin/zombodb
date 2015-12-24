@@ -18,6 +18,7 @@ package com.tcdi.zombodb.postgres;
 
 import com.tcdi.zombodb.query_parser.QueryRewriter;
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.search.SearchAction;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -54,7 +55,7 @@ public class PostgresAggregationAction extends BaseRestHandler {
     protected void handleRequest(RestRequest request, RestChannel channel, Client client) throws Exception {
         try {
             final long start = System.currentTimeMillis();
-            SearchRequestBuilder builder = new SearchRequestBuilder(client);
+            SearchRequestBuilder builder = SearchAction.INSTANCE.newRequestBuilder(client);
             String input = request.content().toUtf8();
             final QueryRewriter rewriter = new QueryRewriter(client, request.param("index"), request.param("preference"), input, true, false, true, false);
             QueryBuilder qb = rewriter.rewriteQuery();

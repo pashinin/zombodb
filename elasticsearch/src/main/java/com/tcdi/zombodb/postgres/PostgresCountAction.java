@@ -61,8 +61,7 @@ public class PostgresCountAction extends BaseRestHandler {
             request.params().put("_source", "false");
 
             // perform the search
-            searchRequest = RestSearchAction.parseSearchRequest(request);
-            searchRequest.listenerThreaded(false);
+            searchRequest = RestSearchAction.parseSearchRequest(request, parseFieldMatcher);
             searchRequest.searchType(SearchType.COUNT);
             searchRequest.preference(request.param("preference"));
 

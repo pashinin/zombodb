@@ -16,6 +16,7 @@
 package com.tcdi.zombodb.highlight;
 
 import com.tcdi.zombodb.query_parser.*;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeAction;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequestBuilder;
 import org.elasticsearch.client.Client;
 
@@ -166,7 +167,7 @@ public class DocumentHighlighter {
                                 continue;
                             analyzeData(indexName, primaryKeyFieldname, resolveAllFieldnames(null, (Map) element, new HashSet<String>()), fieldName.substring(0, fieldName.lastIndexOf('.')), (Map) element, baseDocumentData);
                         } else {
-                            AnalyzeRequestBuilder rb = new AnalyzeRequestBuilder(client.admin().indices(), indexName, String.valueOf(element).toLowerCase());
+                            AnalyzeRequestBuilder rb = AnalyzeAction.INSTANCE.newRequestBuilder(client).setIndex(indexName).setText(String.valueOf(element).toLowerCase());
                             rb.setAnalyzer("phrase");
 
                             try {
@@ -179,7 +180,7 @@ public class DocumentHighlighter {
                         }
                     }
                 } else {
-                    AnalyzeRequestBuilder rb = new AnalyzeRequestBuilder(client.admin().indices(), indexName, String.valueOf(value).toLowerCase());
+                    AnalyzeRequestBuilder rb = AnalyzeAction.INSTANCE.newRequestBuilder(client).setIndex(indexName).setText(String.valueOf(value).toLowerCase());
                     rb.setAnalyzer("phrase");
 
                     try {

@@ -7,10 +7,6 @@
       "_all": {
         "enabled": false
       },
-      "_field_names": {
-        "index": "no",
-        "store": false
-      },
       "_meta": {
         "primary_key": "id",
         "noxact": false
@@ -96,10 +92,6 @@
       "_all": {
         "enabled": true,
         "analyzer": "phrase"
-      },
-      "_field_names": {
-        "index": "no",
-        "store": false
       },
       "_parent": {
         "type": "xact"

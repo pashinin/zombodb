@@ -2,9 +2,7 @@ package com.tcdi.zombodb.postgres;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tcdi.zombodb.query_parser.QueryRewriter;
-import org.elasticsearch.action.search.MultiSearchRequestBuilder;
-import org.elasticsearch.action.search.MultiSearchResponse;
-import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.*;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
@@ -71,11 +69,11 @@ public class ZombodbMultisearchAction extends BaseRestHandler {
     @Override
     protected void handleRequest(RestRequest request, RestChannel channel, Client client) throws Exception {
         MultisearchDescriptor[] descriptors = new ObjectMapper().readValue(request.content().streamInput(), MultisearchDescriptor[].class);
-        MultiSearchRequestBuilder msearchBuilder = new MultiSearchRequestBuilder(client);
+        MultiSearchRequestBuilder msearchBuilder = MultiSearchAction.INSTANCE.newRequestBuilder(client);
         String thisType = request.param("type");
 
         for (MultisearchDescriptor md : descriptors) {
-            SearchRequestBuilder srb = new SearchRequestBuilder(client);
+            SearchRequestBuilder srb = SearchAction.INSTANCE.newRequestBuilder(client);
 
             srb.setIndices(md.getIndexName());
             srb.setTypes(thisType);

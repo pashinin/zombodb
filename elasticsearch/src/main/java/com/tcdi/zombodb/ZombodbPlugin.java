@@ -18,13 +18,13 @@ package com.tcdi.zombodb;
 import com.tcdi.zombodb.postgres.*;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.plugins.AbstractPlugin;
+import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.rest.RestModule;
 
 /**
  * @author e_ridge
  */
-public class ZombodbPlugin extends AbstractPlugin {
+public class ZombodbPlugin extends Plugin {
 
     @Inject
     public ZombodbPlugin(Settings settings) {

@@ -15,6 +15,7 @@
  */
 package com.tcdi.zombodb.query_parser;
 
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeAction;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequestBuilder;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.client.Client;
@@ -176,11 +177,10 @@ public class Utils {
         analyzer += "_search";
         try {
             AnalyzeResponse response = client.admin().indices().analyze(
-                    new AnalyzeRequestBuilder(
-                            client.admin().indices(),
-                            metadataManager.getMetadataForField(fieldname).getLink().getIndexName(),
-                            phrase
-                    ).setAnalyzer(analyzer).request()
+                    AnalyzeAction.INSTANCE.newRequestBuilder(client)
+                            .setIndex(metadataManager.getMetadataForField(fieldname).getLink().getIndexName())
+                            .setText(phrase)
+                            .setAnalyzer(analyzer).request()
             ).get();
 
             List<String> tokens = new ArrayList<>();

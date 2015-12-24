@@ -45,7 +45,7 @@ public class TestQueryRewriter extends ZomboDBTestCase {
             "'prefix* *wildcard *wildcard2* *wild*card3* wild*card4' " +
             "( ( (( ( custodian = \"QUERTY, V\" AND recordtype = \"EMAIL ATTACHMENT\" AND fileextension = PDF ) )) AND fileextension = pdf ) ) " +
             "001 123 0 000 0.23 " +
-            "$$ doc['id'].value > 1024 $$ " +
+            "$$ doc['id'].value > 1024; $$ " +
             "field:~'^.*' " +
             "subject:[[ a, b, c, d ]] or title:[[1,2,3,4,5]] " +
             "'this is a sloppy phrase~'~11 \"so is this\"~42 " +

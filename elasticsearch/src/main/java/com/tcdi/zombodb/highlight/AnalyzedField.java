@@ -16,6 +16,7 @@
 package com.tcdi.zombodb.highlight;
 
 import com.tcdi.zombodb.query_parser.*;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeAction;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequest;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequestBuilder;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
@@ -548,7 +549,7 @@ public class AnalyzedField {
 
     private AnalyzeResponse analyzePhrase(String value) {
         try {
-            AnalyzeRequest request = new AnalyzeRequestBuilder(client.admin().indices(), indexName, String.valueOf(value).toLowerCase()).setAnalyzer("phrase").request();
+            AnalyzeRequest request = AnalyzeAction.INSTANCE.newRequestBuilder(client).setIndex(indexName).setText(String.valueOf(value).toLowerCase()).setAnalyzer("phrase").request();
             return client.admin().indices().analyze(request).get();
         } catch (Exception e) {
             throw new RuntimeException(e);

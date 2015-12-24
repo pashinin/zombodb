@@ -40,11 +40,14 @@ void appendBinaryStringInfoAndStripLineBreaks(StringInfo str, const char *data, 
     pfree(lcase);
 
     for (i=str->len; i<str->len+datalen; i++) {
-        switch (str->data[i]) {
-            case '\r':
-            case '\n':
-                str->data[i] = ' ';
-        }
+        if (str->data[i]<=127)
+            str->data[i] = ' ';
+        else
+            switch (str->data[i]) {
+                case '\r':
+                case '\n':
+                    str->data[i] = ' ';
+            }
     }
     str->len += datalen;
 
